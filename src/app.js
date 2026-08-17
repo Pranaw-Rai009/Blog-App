@@ -2,6 +2,8 @@ import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 
+import { errorHandler } from './middlewares/errroHandler.middleware.js'
+
 const app = express()
 
 app.use(cors({
@@ -16,3 +18,5 @@ app.use(express.static("public"))
 
 
 export default app
+
+app.use(errorHandler)
