@@ -4,6 +4,8 @@ import cookieParser from 'cookie-parser'
 
 import { errorHandler } from './middlewares/errroHandler.middleware.js'
 
+import userRouter from './routes/user.routes.js'
+
 const app = express()
 
 app.use(cors({
@@ -16,7 +18,7 @@ app.use(express.urlencoded({limit: "16kb", extended: true}))
 app.use(express.static("public"))
 
 
+app.use("/api/user", userRouter)
 
 export default app
-
 app.use(errorHandler)
