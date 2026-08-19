@@ -45,8 +45,35 @@ export const deleteUserById = asyncHandler(async (req, res) => {
 export const getAllUser = asyncHandler(async (req, res) => {
     const allUser = await User.find()
     if(allUser.length === 0) {
-        throw new ApiError(404, "No users foudn")
+        throw new ApiError(404, "No users found")
     } else {
         res.status(200).json({allUser})
     }
+})
+
+export const getUserById = asyncHandler(async (req, res) => {
+    const userId = req.user._id
+    if(!userId) {
+        throw new ApiError(400, "User Id required!")
+    }
+
+    const user = await User.findById(userId)
+    if(!user) {
+        throw new ApiError(404, "No user found!")
+    }
+
+    res.status(200).json(user)
+})
+
+export const updateUserById = asyncHandler(async (req, res) => {
+    const userId = req.user._id
+    if(!userId) {
+        throw new ApiError(400, "User Id required!")
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(userId, req.body, {new: true})
+    if(!updatedUser) {
+        throw new ApiError(404, "User cannot be updated")
+    }
+    res.status(200).json({message: "User Updated", updatedUser})
 })
