@@ -1,5 +1,0 @@
-A blog post is a app where
-We have users: A user can have user name, full name, email , password, id
-
-
-We have 
