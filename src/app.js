@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser'
 import { errorHandler } from './middlewares/errroHandler.middleware.js'
 
 import userRouter from './routes/user.routes.js'
+import postRouter from './routes/post.routes.js'
 
 const app = express()
 app.use(cookieParser())
@@ -20,6 +21,8 @@ app.use(express.static("public"))
 
 
 app.use("/api/user", userRouter)
+
+app.use("/api/post", postRouter)
 
 export default app
 app.use(errorHandler)
