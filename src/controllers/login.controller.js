@@ -24,7 +24,7 @@ export const logIn = asyncHandler(async (req, res) => {
     }
 
     const refreshToken = emailVerify.generateRefreshToken()
-    const accessToken = emailVerify.generateAccessToken()
+    const accessToken = emailVerify.generateAccesToken()
 
     res.cookie("refreshToken", refreshToken, {
         httpOnly: true,

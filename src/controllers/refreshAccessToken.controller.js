@@ -21,6 +21,6 @@ export const refreshAccessToken = asyncHandler(async (req, res) => {
         throw new ApiError(404, "User with this id doesn't exist!")
     }
 
-    const newAccessToken = user.generateAccessToken()
+    const newAccessToken = user.generateAccesToken()
     res.status(200).json({ accessToken: newAccessToken })
 })

@@ -7,6 +7,7 @@ import { errorHandler } from './middlewares/errroHandler.middleware.js'
 import userRouter from './routes/user.routes.js'
 
 const app = express()
+app.use(cookieParser())
 
 app.use(cors({
     origin: process.env.CORS_ORIGIN,

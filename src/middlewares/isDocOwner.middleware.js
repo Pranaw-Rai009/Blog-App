@@ -1,4 +1,4 @@
-import { asyncHandler } from "../MovieSearchApp/src/utils/asyncHandler.util.js";
+import { asyncHandler } from "../utils/asyncHandler.util.js";
 import {  Post } from "../models/post.model.js";
 import { ApiError } from "../utils/apiError.util.js";
 
@@ -15,7 +15,7 @@ export const isDocOwner = asyncHandler(async (req, res, next) => {
 
     const isEligible = await Post.findOne({user: userId, _id: docId})
     if(!isEligible) {
-        throw new ApiError(401, "Access Denied")
+        throw new ApiError(401, "Access Denied", ["you are not the owner"])
     }
     req.doc = isEligible
     next()

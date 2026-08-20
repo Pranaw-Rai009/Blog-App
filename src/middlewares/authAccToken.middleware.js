@@ -1,9 +1,9 @@
-import { ApiError } from "../utils/apiError.util";
-import { asyncHandler } from "../utils/asyncHandler.util";
+import { ApiError } from "../utils/apiError.util.js";
+import { asyncHandler } from "../utils/asyncHandler.util.js";
 import jwt from 'jsonwebtoken'
 
 export const authAcces = asyncHandler(async (req, res, next) => {
-    const authHeader = req.headers["athorization"]
+    const authHeader = req.headers["authorization"]
     if(!authHeader) {
         throw new ApiError(400, "Authrization header missing!")
     }
@@ -11,7 +11,7 @@ export const authAcces = asyncHandler(async (req, res, next) => {
     const accessToken = authHeader.split(" ")[1]
     const verify = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET)
     if(!verify) {
-        throw new ApiError(401, "Access token cannot be verified!")
+        throw new ApiError(401, "Token verification failed!")
     }
     req.user = verify
     next()

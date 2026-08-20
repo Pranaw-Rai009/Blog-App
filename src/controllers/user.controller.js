@@ -29,36 +29,36 @@ export const registerUser = asyncHandler(async function (req, res) {
 
 export const deleteUserById = asyncHandler(async (req, res) => {
     const id = req.params.id
-    if(!id) {
+    if (!id) {
         throw new ApiError(400, "User id required!")
     }
 
     const exist = await User.findById(id)
-    if(!exist) {
+    if (!exist) {
         throw new ApiError(404, "The user doesn't exist!")
     }
 
     await User.findByIdAndDelete(id)
-    res.status(200).json({message: "Deleted"})
+    res.status(200).json({ message: "Deleted" })
 })
 
 export const getAllUser = asyncHandler(async (req, res) => {
     const allUser = await User.find()
-    if(allUser.length === 0) {
+    if (allUser.length === 0) {
         throw new ApiError(404, "No users found")
     } else {
-        res.status(200).json({allUser})
+        res.status(200).json({ allUser })
     }
 })
 
 export const getUserById = asyncHandler(async (req, res) => {
-    const userId = req.user._id
-    if(!userId) {
+    const userId = req.params.id
+    if (!userId) {
         throw new ApiError(400, "User Id required!")
     }
 
     const user = await User.findById(userId)
-    if(!user) {
+    if (!user) {
         throw new ApiError(404, "No user found!")
     }
 
@@ -67,13 +67,44 @@ export const getUserById = asyncHandler(async (req, res) => {
 
 export const updateUserById = asyncHandler(async (req, res) => {
     const userId = req.user._id
-    if(!userId) {
+    if (!userId) {
         throw new ApiError(400, "User Id required!")
     }
+    const { fullName, userName, email } = req.body
 
-    const updatedUser = await User.findByIdAndUpdate(userId, req.body, {new: true})
-    if(!updatedUser) {
+    const userExist = await User.findById(userId)
+    if(!userExist) {
+        throw new ApiError(400, "No user")
+    }
+    // whitelisting
+    const updatedUser = await User.findByIdAndUpdate(userId, { fullName: fullName, userName: userName, email: email }, { returnDocument: 'after' })
+
+    if (!updatedUser) {
         throw new ApiError(404, "User cannot be updated")
     }
-    res.status(200).json({message: "User Updated", updatedUser})
+    res.status(200).json({ message: "User Updated", updatedUser })
+})
+
+export const updatePassword = asyncHandler(async (req, res) => {
+    const { oldPassword, newPassword } = req.body
+    if (!oldPassword) {
+        throw new ApiError(400, "Old password required!")
+    }
+    if (!newPassword) {
+        throw new ApiError(400, "New password required!")
+    }
+
+    const userId = req.user._id
+    const userProfile = await User.findById(userId)
+    const passwordCheck = await userProfile.isPasswordCorrect(oldPassword)
+    if(!passwordCheck) {
+        throw new ApiError(401, "Incorrect old password!")
+    }
+
+    userProfile.password = password
+    await userProfile.save()
+
+    res.status(200).json({message: "Password changed successfully"})
+    
+    
 })
