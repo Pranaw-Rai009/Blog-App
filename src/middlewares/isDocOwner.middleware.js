@@ -13,6 +13,9 @@ export const isDocOwner = asyncHandler(async (req, res, next) => {
         throw new ApiError(400, "Doc Id is missing")
     }
 
+    const postExist = await Post.findOne({id: docId})
+    if(!postExist) throw new ApiError (404, "No such post")
+        
     const isEligible = await Post.findOne({user: userId, _id: docId})
     if(!isEligible) {
         throw new ApiError(401, "Access Denied", ["you are not the owner"])

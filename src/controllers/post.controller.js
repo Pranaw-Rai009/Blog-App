@@ -20,12 +20,12 @@ export const createPost = asyncHandler(async (req, res) => {
 
 
 // Work Test
-export const getAllPost = asyncHandler(async (req, res) => {
+export const getMyPost = asyncHandler(async (req, res) => {
     const userId = req.user._id
     if(!userId) throw new ApiError(400, "User Id required")
-    const allPost = await Post.findOne({user: userId})
+    const allPost = await Post.find({user: userId})
 
-    if(!allPost) throw new ApiError(404, "No post related to the user")
+    if(allPost.length === 0) throw new ApiError(404, "No post related to the user")
     
     res.status(209).json(allPost)
 
@@ -44,11 +44,29 @@ export const updatePost = asyncHandler(async (req, res) => {
     res.status(200).json(updatedPost)
 })
 
-// export const getPostById = asyncHandler(async (req, res) => {
+export const getPostById = asyncHandler(async (req, res) => {
+    const postId = req.params.id
+    
+    const post = await Post.findById(postId)
+    if(!post) throw new ApiError(404, "Post doesn't exist!")
+    
+    res.status(200).json(post)
+})
+
+export const deletePostById = asyncHandler(async (req, res) => {
+    const postId = req.params.id
+    if(!postId) throw new ApiError(404, "Post Id required")
+
+    await Post.findByIdAndDelete(postId)
+    res.status(200).json({message: "Deleted Post"})
+})
+
+// export const getOthersPostById = asyncHandler(async (req, res) => {
 //     const postId = req.params.id
-    
+//     if(!postId) throw new ApiError(400, "Post Id required!")
+
 //     const post = await Post.findById(postId)
-//     if(!post) throw new ApiError(404, "Post doesn't exist!")
-    
+//     if(!post) throw new ApiError(404, "Post doesn't exist")
+
 //     res.status(200).json(post)
 // })
