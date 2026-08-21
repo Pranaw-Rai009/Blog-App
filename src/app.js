@@ -7,6 +7,7 @@ import { errorHandler } from './middlewares/errroHandler.middleware.js'
 import userRouter from './routes/user.routes.js'
 import postRouter from './routes/post.routes.js'
 import commentRouter from './routes/comment.routes.js'
+import tagRouter from './routes/tag.routes.js'
 
 const app = express()
 app.use(cookieParser())
@@ -27,5 +28,8 @@ app.use("/api/post", postRouter)
 
 app.use("/api/comment", commentRouter)
 
-export default app
+app.use("/api/tag", tagRouter)
+
 app.use(errorHandler)
+
+export default app

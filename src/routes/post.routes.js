@@ -1,5 +1,5 @@
 import Router from 'express'
-import { createPost, getMyPost, updatePost, getPostById, deletePostById, getOthersPostById } from "../controllers/post.controller.js"
+import { createPost, getMyPost, updatePost, getPostById, deletePostById } from "../controllers/post.controller.js"
 import { authAcces } from '../middlewares/authAccToken.middleware.js'
 import { isDocOwner } from '../middlewares/isDocOwner.middleware.js'
 const router = Router()

@@ -1,9 +1,9 @@
-import { User } from "../models/user.model";
+import { User } from "../models/user.model.js";
 import { Comment} from "../models/comment.model.js";
 import { Post } from "../models/post.model.js";
-import { asyncHandler } from "../utils/asyncHandler.util";
+import { asyncHandler } from "../utils/asyncHandler.util.js";
 import { ApiError } from "../utils/apiError.util.js";
-import { useId } from "react";
+// import { useId } from "react";
 
 export const canDeleteComment = asyncHandler(async (req, res, next) => {
     const userId = req.user._id

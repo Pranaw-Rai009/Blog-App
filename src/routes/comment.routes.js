@@ -7,7 +7,7 @@ import { createComment, getCmtOfPost, deleteComment } from '../controllers/comme
 
 const router = Router()
 
-router.create("/comment", authAcces, createComment)
+router.post("/create", authAcces, createComment)
 router.get("/postCmt", getCmtOfPost)
 router.delete("/delete/:id", authAcces, canDeleteComment, deleteComment)
 
